@@ -3,6 +3,10 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <form asp-controller="Cars" asp-action="SeeCar">
+        <input asp-route-id="ID" type="submit" value="Change Me when you add cars" />
+    </form>
+    <form asp-controller="Cars" asp-action="AddCar">
+        <input type="submit" value="Add new car" />
+    </form>
 </div>
