@@ -7,6 +7,7 @@ namespace MaintenanceManager.Models
 {
     public class Car
     {
+        public int LocalID { get; set; }
         public int BodyID { get; set; }
         public string DefaultSearchText { get; } = "Keyword Search";
         public int DoorsID { get; set; }
