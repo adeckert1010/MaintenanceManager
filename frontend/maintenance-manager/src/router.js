@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import HelloWorld from '@/components/HelloWorld.vue'
+import Home from '@/views/Home'
 import Router from 'vue-router'
+import AddCar from '@/views/AddCar'
 
 Vue.use(Router)
 
@@ -11,15 +12,16 @@ export default new Router({
         {
             path: '/',
             name: 'home',
-            component: HelloWorld
+            component: Home
         },
         {
             path: '/login',
             name: 'login'
         },
         {
-            path: '/cars',
-            name: 'cars'
+            path: '/addcar',
+            name: 'addcar',
+            component: AddCar
         }
     ]
 })
