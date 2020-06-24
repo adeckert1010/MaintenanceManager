@@ -6,29 +6,29 @@
           <v-toolbar color="secondary">
             <v-toolbar-title>Choose your car</v-toolbar-title>
           </v-toolbar>
-          <v-img id="carImage" v-show="name" :src="imgSrc" transition :lazy-src="require('@/assets/Transpo_G70_TA-518126.jpg')">
+          <v-img id="carImage" v-show="car.name" :src="imgSrc" transition :lazy-src="require('@/assets/Transpo_G70_TA-518126.jpg')">
           <template v-slot:placeholder>
         <v-row
           class="fill-height ma-0"
           align="center"
           justify="center"
         >
-          <v-progress-circular v-if="name" indeterminate color="grey lighten-5"></v-progress-circular>
+          <v-progress-circular v-if="car.name" indeterminate color="grey lighten-5"></v-progress-circular>
         </v-row>
           </template>
 </v-img>
           <v-card-text>
-            <p>{{year}} {{make}} {{name}}</p>
+            <p>{{car.year}} {{car.make}} {{car.name}}</p>
             <v-form>
               <v-select
                 :items="years"
-                v-model="year"
+                v-model="car.year"
                 label="Select A Year"
                 @change="getMakesByYear(); clearMake(); clearName();"
               ></v-select>
               <v-select
-                v-if="year"
-                v-model="make"
+                v-if="car.year"
+                v-model="car.make"
                 label="Select A Make"
                 :items="makes"
                 :loading="!makes"
@@ -36,19 +36,26 @@
                 @change="getModelsByYearAndMake(); clearName();"
               ></v-select>
               <v-select
-                v-if="make"
-                v-model="name"
+                v-if="car.make"
+                v-model="car.name"
                 label="Select A Model"
                 :items="models"
                 :loading="!models"
                 :disabled="!models"
                 @change="getPicture()"
               ></v-select>
+              <v-text-field
+              v-if="car.name"
+               type="number"
+               required
+               label="Mileage"
+               v-model="car.miles"
+              ></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="primary">Login</v-btn>
+            <v-btn v-if="car.miles" color="primary" :to="{ name: 'results', params: {year: car.year, make: car.make, name: car.name, miles: car.miles} }">Get Results</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -89,9 +96,13 @@ export default {
         "1997",
         "1996"
       ],
-      year: null,
-      make: "",
-      name: "",
+      car: {
+        year: null,
+        make: "",
+        name: "",
+        miles: null,
+        carImg: this.imgSrc
+      },
       imgSrc: ""
     };
   },
@@ -105,7 +116,7 @@ export default {
         "Basic NzhhZTlkY2YtYzY5YS00NmMzLTg1NjAtY2YzMDBiNDI0ZWQy"
       );
       headers.append("partner-token", "ae89a034867a458cb665133a5ad4e8a7");
-      fetch(`https://api.carmd.com/v3.0/make?year=${this.year}`, {
+      fetch(`https://api.carmd.com/v3.0/make?year=${this.car.year}`, {
         method: "GET",
         headers: headers
       })
@@ -129,7 +140,7 @@ export default {
       );
       headers.append("partner-token", "ae89a034867a458cb665133a5ad4e8a7");
       fetch(
-        `https://api.carmd.com/v3.0//model?year=${this.year}&make=${this.make}`,
+        `https://api.carmd.com/v3.0//model?year=${this.car.year}&make=${this.car.make}`,
         {
           method: "GET",
           headers: headers
@@ -156,7 +167,7 @@ export default {
       };
       oReq.open(
         "GET",
-        `http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=${this.year}+${this.make}+${this.name}`,
+        `http://www.carimagery.com/api.asmx/GetImageUrl?searchTerm=${this.car.year}+${this.car.make}+${this.car.name}`,
         true
       );
       oReq.send();
@@ -169,10 +180,10 @@ export default {
       self.imgSrc = x[0].firstChild.data;
     },
     clearName() {
-      this.name = "";
+      this.car.name = "";
     },
     clearMake() {
-      this.make = "";
+      this.car.make = "";
     }
   }
   // computed: {
