@@ -1,4 +1,5 @@
 # MaintenanceManager
+Application to track maintenance on your vehicle.
 
 navigate to frontend/maintenance-manager
 
